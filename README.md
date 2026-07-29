@@ -1,8 +1,6 @@
 # Payoda Machine Learning Assignment
 
-**Candidate:** [Your Name]
-**Repository:** https://github.com/Lavanyas-19/payoda-ml-assignment
-
+**Candidate:** Lavanya S
 This repository contains solutions for two problems as part of the Payoda ML Engineer take-home assignment:
 
 1. **P1 — Spaceship Titanic** (Mandatory) — Binary Classification
