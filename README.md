@@ -1,4 +1,4 @@
-# Payoda ML Engineer Assignment
+# Payoda Machine Learning Assignment
 
 **Candidate:** [Your Name]
 **Repository:** https://github.com/Lavanyas-19/payoda-ml-assignment
