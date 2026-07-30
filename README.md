@@ -1,7 +1,5 @@
-# Payoda ML Engineer Assignment
+# Payoda Machine Learning Assignment
 
-**Candidate:** [Your Name]
-**Repository:** https://github.com/Lavanyas-19/payoda-ml-assignment
 
 This repository contains solutions for two problems as part of the Payoda ML Engineer take-home assignment:
 
@@ -14,8 +12,6 @@ This repository contains solutions for two problems as part of the Payoda ML Eng
 
 ### Problem
 Predict whether each passenger aboard the Spaceship Titanic was transported to an alternate dimension (`Transported`: True/False), based on demographic, travel, and spending data. Evaluated on classification accuracy.
-
-Competition link: https://www.kaggle.com/competitions/spaceship-titanic
 
 ### Approach
 
