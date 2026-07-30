@@ -4,7 +4,7 @@
 This repository contains solutions for two problems as part of the Payoda ML Engineer take-home assignment:
 
 1. **P1 — Spaceship Titanic** (Mandatory) — Binary Classification
-2. **P2 — House Prices** (Chosen second problem) — Regression *(in progress)*
+2. **P2 — House Prices** (Chosen second problem) — Regression 
 
 ---
 
@@ -108,5 +108,78 @@ Used Claude (Anthropic) for step-by-step guidance on pipeline structure, explain
 
 ---
 
-## P2 — House Prices
-*(To be added)*
+## P2 — House Prices: Advanced Regression Techniques
+
+### Problem
+Predict the sale price (`SalePrice`) of residential homes in Ames, Iowa, using 79 explanatory variables covering nearly every aspect of a house (size, quality, location, age, amenities). Evaluated on RMSE of log-transformed SalePrice.
+
+Competition link: https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques
+
+### Approach
+
+**1. Target Analysis**
+`SalePrice` was heavily right-skewed (skewness 1.88) — a log transform (`log1p`) reduced this to near-symmetric (0.12), matching the competition's own evaluation metric.
+
+**2. Missing Value Handling — Structural vs Genuine**
+Unlike P1, most missingness here is **structural**, not random. Cross-referenced `data_description.txt` and confirmed that for 15 columns (PoolQC, Fence, GarageType, BsmtQual, etc.), `NA` explicitly means "feature absent" (e.g., no pool, no garage), not unknown data — these were filled with a `"None"` category rather than statistically imputed. Remaining genuine gaps: `LotFrontage` (filled via neighborhood median — location-aware), `GarageYrBlt`/`MasVnrArea` (filled 0, consistent with "no garage/veneer"), `Electrical` (mode).
+
+**3. Outlier Removal**
+Identified and removed 2 well-documented dataset anomalies (houses with `GrLivArea` > 4000 sqft but `SalePrice` < $300k). Confirmed via correlation analysis these defied the expected size-price relationship. Removing them reduced CV RMSE from 0.1427 to 0.1131 and cut fold-to-fold variance roughly 3x.
+
+**4. Feature Engineering**
+- `TotalSF` (basement + 1st + 2nd floor sqft) — correlation 0.78 with SalePrice, nearly matching OverallQual
+- `TotalBathrooms` (weighted full + half baths) — correlation 0.63
+- `HouseAge`, `YearsSinceRemodel` — both show expected negative correlation with price
+
+**5. Encoding**
+- 10 quality-rating columns (ExterQual, BsmtQual, KitchenQual, etc.) — **ordinally encoded** (None=0 → Excellent=5), preserving their genuine rank order rather than losing it to one-hot encoding
+- 33 remaining categorical columns — one-hot encoded; fixed a 16-column train/test mismatch caused by rare categories
+
+**6. Modeling**
+Compared Ridge, Lasso, and XGBoost via 5-fold cross-validation on the log-transformed target:
+
+| Model | CV Mean RMSE (log) |
+|---|---|
+| **Ridge (scaled)** | **0.1130** |
+| Lasso (scaled) | 0.1140 |
+| XGBoost (tuned) | 0.1151 |
+
+Notably, regularized linear models slightly outperformed tuned XGBoost — a real, non-obvious result given this dataset's high feature-to-row ratio (266 features, ~1460 rows), where regularization matters more than tree-based non-linearity. Final model: a 70/30 weighted blend of Ridge and XGBoost, chosen for robustness across validation splits.
+
+**Final validation metrics:**
+
+| Metric | Value |
+|---|---|
+| Validation RMSLE (log scale) | 0.1159 |
+| MAE (in $) | $13,849 |
+| R² | 0.9203 |
+
+**Top 5 features (XGBoost importance):** ExterQual, OverallQual, TotalSF (engineered), GarageCars, BsmtQual.
+
+### Key Visualizations
+
+**Residual analysis — errors are roughly balanced around zero, no severe systematic bias:**
+
+![Residual Plot](p2-house-prices/plot1_residuals.png)
+
+**Feature importance — quality ratings and engineered TotalSF dominate:**
+
+![Feature Importance](p2-house-prices/plot2_feature_importance.png)
+
+### How to Run
+
+```bash
+# From the ML-Assignment root folder (same environment as P1)
+cd p2-house-prices
+# Open p2_house_prices.ipynb in VS Code / Jupyter and run all cells
+```
+
+Requires `train.csv`, `test.csv`, `sample_submission.csv`, `data_description.txt` from the [Kaggle data page](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data) placed inside `p2-house-prices/`.
+
+### Artifacts
+- Notebook: `p2-house-prices/p2_house_prices.ipynb`
+- Submission: `p2-house-prices/submission.csv`
+- Plots: `p2-house-prices/plot1_residuals.png`, `plot2_feature_importance.png`
+
+### AI Usage Disclosure
+Same as P1 — used Claude for step-by-step guidance, explanations, and debugging; all code run, verified, and understood by the candidate.
