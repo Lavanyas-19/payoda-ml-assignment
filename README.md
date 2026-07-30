@@ -166,6 +166,10 @@ Notably, regularized linear models slightly outperformed tuned XGBoost — a rea
 
 ![Feature Importance](p2-house-prices/plot2_feature_importance.png)
 
+**Predicted vs Actual — final blended model predictions closely track true sale prices:**
+
+![Predicted vs Actual](p2-house-prices/plot3_predicted_vs_actual.png)
+
 ### How to Run
 
 ```bash
@@ -179,7 +183,7 @@ Requires `train.csv`, `test.csv`, `sample_submission.csv`, `data_description.txt
 ### Artifacts
 - Notebook: `p2-house-prices/p2_house_prices.ipynb`
 - Submission: `p2-house-prices/submission.csv`
-- Plots: `p2-house-prices/plot1_residuals.png`, `plot2_feature_importance.png`
+- Plots: `p2-house-prices/plot1_residuals.png`, `plot2_feature_importance.png`, `plot3_predicted_vs_actual.png`
 
 ### AI Usage Disclosure
 Same as P1 — used Claude for step-by-step guidance, explanations, and debugging; all code run, verified, and understood by the candidate.
