@@ -4,3 +4,4 @@ __pycache__/
 .ipynb_checkpoints/
 *.csv
 !p1-spaceship-titanic/submission.csv
+!p2-house-prices/submission.csv
