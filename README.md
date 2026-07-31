@@ -59,6 +59,7 @@ XGBoost was selected as the final model — best accuracy and most consistent ac
 | F1 Score | 0.8203 |
 | ROC-AUC | 0.9069 |
 | Log Loss | 0.3885 |
+| Kaggle Public Accuracy | 0.8038 |
 
 **Feature importance** (top 3, from tuned XGBoost): `CryoSleep` (23.7%), `HomePlanet_Earth` (14.8%), `TotalSpend` (11.0%) — directly consistent with EDA findings, confirming the engineered features and imputation strategy were genuinely informative rather than arbitrary.
 
