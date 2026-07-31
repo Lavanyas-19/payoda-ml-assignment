@@ -151,6 +151,7 @@ Notably, regularized linear models slightly outperformed tuned XGBoost — a rea
 | Metric | Value |
 |---|---|
 | Validation RMSLE (log scale) | 0.1159 |
+| Kaggle Public RMSLE | 0.1326 |
 | MAE (in $) | $13,849 |
 | R² | 0.9203 |
 
